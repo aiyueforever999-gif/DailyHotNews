@@ -6,6 +6,17 @@ on:
     - cron: '0 0 * * *'
   workflow_dispatch:
 
+# 设置 GITHUB_TOKEN 权限，用于部署 GitHub Pages
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+# 允许同时只有一个部署任务在进行
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   run-daily-hot-news:
     runs-on: ubuntu-latest
@@ -22,6 +33,8 @@ jobs:
       - name: 运行脚本
         env:
           SERVERCHAN_SENDKEY: ${{ secrets.SERVERCHAN_SENDKEY }}
+          WECHAT_WEBHOOK_KEY: ${{ secrets.WECHAT_WEBHOOK_KEY }}
+          GITHUB_PAGES_URL: ${{ vars.GITHUB_PAGES_URL }}
         run: python daily_hot_news.py
 
       - name: 提交生成的文件
@@ -31,3 +44,26 @@ jobs:
           git add data/ html/
           git diff --cached --quiet || git commit -m "chore: daily hot news update $(date +%Y-%m-%d)"
           git push
+
+  deploy-pages:
+    needs: run-daily-hot-news
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 设置 Pages
+        uses: actions/configure-pages@v5
+
+      - name: 上传 HTML 目录
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'html'
+
+      - name: 部署到 GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

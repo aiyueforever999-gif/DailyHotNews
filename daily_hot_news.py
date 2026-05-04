@@ -30,6 +30,29 @@ USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
 SERVERCHAN_SENDKEY = os.environ.get("SERVERCHAN_SENDKEY", "SCT339556TpyiiJVS5IuBEXSoeFvMLkoaq")
 SERVERCHAN_API = "https://sctapi.ftqq.com/{sendkey}.send"
 
+# 企业微信机器人推送配置
+# 1. 在企业微信群聊中，点击右上角「群设置」→「添加群机器人」→「新建机器人」
+# 2. 复制 Webhook Key，填入下方或设置环境变量 WECHAT_WEBHOOK_KEY
+WECHAT_WEBHOOK_KEY = os.environ.get("WECHAT_WEBHOOK_KEY", "01e35f3c-f51d-4e5b-b0d1-9853964b41d5")
+WECHAT_WEBHOOK_API = "https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key={key}"
+
+# GitHub Pages 地址前缀（用于生成可点击的日报链接）
+# 格式: https://<用户名>.github.io/<仓库名>/html/
+# 在 GitHub Actions 中会自动从 GITHUB_REPOSITORY 环境变量推断
+_GITHUB_REPO = os.environ.get("GITHUB_REPOSITORY", "")
+if _GITHUB_REPO:
+    _OWNER, _REPO = _GITHUB_REPO.split("/", 1)
+    _AUTO_PAGES_URL = f"https://{_OWNER}.github.io/{_REPO}/html/"
+else:
+    _AUTO_PAGES_URL = ""
+
+# 优先使用显式配置的环境变量，若为空则使用自动推断的地址
+_GITHUB_PAGES_URL_ENV = os.environ.get("GITHUB_PAGES_URL", "")
+if _GITHUB_PAGES_URL_ENV:
+    GITHUB_PAGES_URL = _GITHUB_PAGES_URL_ENV
+else:
+    GITHUB_PAGES_URL = _AUTO_PAGES_URL
+
 
 # ============================================================
 # 网络请求
@@ -148,6 +171,65 @@ def fetch_and_normalize() -> dict:
         "百度": baidu_clean,
         "抖音": douyin_clean,
     }
+
+
+# ============================================================
+# 企业微信机器人推送
+# ============================================================
+def push_wechat(title: str, data: dict, html_url: str = "") -> bool:
+    """通过企业微信机器人推送热榜摘要"""
+    if not WECHAT_WEBHOOK_KEY:
+        print("[推送] WECHAT_WEBHOOK_KEY 未配置，跳过企业微信推送")
+        return False
+
+    lines = [f"📰 **{title}**\n"]
+
+    for name in ["36氪", "百度", "抖音"]:
+        items = data.get(name, [])
+        if not items:
+            continue
+        lines.append(f"**🔹 {name} 热榜 Top 5**")
+        for item in items[:5]:
+            rank = item.get("rank", "-")
+            title_text = item.get("title", "")
+            hot = item.get("hot_value", "")
+            url = item.get("url", "")
+            if url:
+                lines.append(f"{rank}. [{title_text}]({url}) {hot}")
+            else:
+                lines.append(f"{rank}. {title_text} {hot}")
+        lines.append("")
+
+    if html_url:
+        lines.append(f"> 📎 [查看完整日报]({html_url})")
+
+    content = "\n".join(lines)
+
+    # 企业微信 markdown 消息长度限制约 4096，做截断保护
+    if len(content) > 4000:
+        content = content[:4000] + "\n\n...（内容过长，请查看完整日报）"
+
+    payload = json.dumps({
+        "msgtype": "markdown",
+        "markdown": {"content": content},
+    }).encode("utf-8")
+
+    url = WECHAT_WEBHOOK_API.format(key=WECHAT_WEBHOOK_KEY)
+    headers = {"Content-Type": "application/json"}
+
+    try:
+        req = urllib.request.Request(url, data=payload, headers=headers, method="POST")
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            result = json.loads(resp.read().decode("utf-8"))
+            if result.get("errcode") == 0:
+                print("[推送] 企业微信 推送成功")
+                return True
+            else:
+                print(f"[推送] 企业微信 推送失败: {result}")
+                return False
+    except Exception as e:
+        print(f"[推送] 企业微信 异常: {e}")
+        return False
 
 
 # ============================================================
@@ -653,10 +735,18 @@ def main():
         f.write(html_content)
     print(f"[HTML] 页面已生成 -> {html_path}")
 
-    # 4. 推送到微信（Server酱）
+    # 4. 构建 GitHub Pages 日报链接
+    html_url = ""
+    if GITHUB_PAGES_URL:
+        html_url = f"{GITHUB_PAGES_URL}{today}-%E7%83%AD%E6%A6%9C%E6%97%A5%E6%8A%A5.html"
+
+    # 5. 推送到微信（Server酱）
     push_serverchan(f"{today} 每日热榜日报", data)
 
-    # 5. 统计
+    # 6. 推送到企业微信
+    push_wechat(f"{today} 每日热榜日报", data, html_url)
+
+    # 7. 统计
     total = sum(len(v) for v in data.values())
     print(f"\n===== 完成 =====")
     print(f"共计 {total} 条热榜内容（36氪 {len(data['36氪'])} / 百度 {len(data['百度'])} / 抖音 {len(data['抖音'])}）")
