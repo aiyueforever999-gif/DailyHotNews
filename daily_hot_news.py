@@ -188,8 +188,8 @@ def push_wechat(title: str, data: dict, html_url: str = "") -> bool:
         items = data.get(name, [])
         if not items:
             continue
-        lines.append(f"**🔹 {name} 热榜 Top 5**")
-        for item in items[:5]:
+        lines.append(f"**🔹 {name} 热榜 Top 10**")
+        for item in items[:10]:
             rank = item.get("rank", "-")
             title_text = item.get("title", "")
             hot = item.get("hot_value", "")
@@ -247,8 +247,8 @@ def push_serverchan(title: str, data: dict) -> bool:
         items = data.get(name, [])
         if not items:
             continue
-        lines.append(f"🔹 <b>{name}</b> 热榜 Top 5")
-        for item in items[:5]:
+        lines.append(f"🔹 <b>{name}</b> 热榜 Top 10")
+        for item in items[:10]:
             rank = item.get("rank", "-")
             title_text = item.get("title", "")
             hot = item.get("hot_value", "")
