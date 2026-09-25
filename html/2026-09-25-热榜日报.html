@@ -1,0 +1,3022 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026-09-25 每日热榜日报</title>
+    <style>
+        :root {
+            --bg: #f5f7fa;
+            --card-bg: #ffffff;
+            --text-main: #1a1a1a;
+            --text-sub: #666666;
+            --text-light: #999999;
+            --border: #e8ecf1;
+            --accent-36kr: #4285f4;
+            --accent-baidu: #2932e1;
+            --accent-douyin: #000000;
+            --shadow: 0 2px 8px rgba(0,0,0,0.06);
+            --shadow-hover: 0 6px 20px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-bottom: 40px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .header .date {
+            font-size: 15px;
+            opacity: 0.85;
+            margin-bottom: 12px;
+        }
+
+        .header .meta {
+            font-size: 13px;
+            opacity: 0.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        /* Tab 导航 */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-top: 24px;
+            padding: 4px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-sub);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            background: var(--bg);
+        }
+
+        .tab-btn.active {
+            color: #fff;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .tab-btn .tab-count {
+            font-size: 12px;
+            font-weight: 400;
+            opacity: 0.8;
+            margin-left: 4px;
+        }
+
+        /* Tab 内容 */
+        .tab-content {
+            display: none;
+            margin-top: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            padding: 0 4px;
+        }
+
+        .section-icon {
+            width: 6px;
+            height: 22px;
+            border-radius: 3px;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .section-36kr .section-icon { background: var(--accent-36kr); }
+        .section-baidu .section-icon { background: var(--accent-baidu); }
+        .section-douyin .section-icon { background: var(--accent-douyin); }
+
+        .cards {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        @media (min-width: 640px) {
+            .cards {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            display: block;
+            background: #f0f0f0;
+        }
+
+        .card-image[src=""] {
+            display: none;
+        }
+
+        .card-body {
+            padding: 14px 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-top {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .card-rank {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: #fff;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .rank-1 { background: linear-gradient(135deg, #ff6b6b, #ee5a5a); }
+        .rank-2 { background: linear-gradient(135deg, #ffa502, #ff7f00); }
+        .rank-3 { background: linear-gradient(135deg, #2ed573, #1dd1a1); }
+        .rank-other { background: #d1d8e0; color: #57606f; }
+
+        .card-title {
+            font-size: 15px;
+            font-weight: 600;
+            line-height: 1.5;
+            color: var(--text-main);
+            flex: 1;
+        }
+
+        .card-title a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .card-title a:hover {
+            color: var(--accent-36kr);
+        }
+
+        .card-summary {
+            font-size: 13px;
+            color: var(--text-sub);
+            margin-top: 6px;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-summary:empty {
+            display: none;
+        }
+
+        .card-footer {
+            margin-top: auto;
+            padding-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        .card-hot {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .card-hot::before {
+            content: "🔥";
+            font-size: 11px;
+        }
+
+        .page-footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            font-size: 12px;
+            color: var(--text-light);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>每日热榜日报</h1>
+        <div class="date">2026-09-25</div>
+        <div class="meta">数据来源：36 氪 · 百度热搜 · 抖音热榜</div>
+    </header>
+
+    <main class="container">
+        <div class="tabs">
+            <button class="tab-btn active" id="btn-tab0" onclick="switchTab('tab0')">36氪<span class="tab-count">50条</span></button><button class="tab-btn " id="btn-tab1" onclick="switchTab('tab1')">百度<span class="tab-count">51条</span></button><button class="tab-btn " id="btn-tab2" onclick="switchTab('tab2')">抖音<span class="tab-count">48条</span></button>
+        </div>
+        <div class="tab-content active" id="tab-tab0">
+    <div class="section section-36kr">
+        <div class="section-header">
+            <div class="section-icon"></div>
+            <h2 class="section-title">36氪</h2>
+        </div>
+        <div class="cards">
+            
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_f5f451dac125464bad2ce4d6186a2567@5091053@ai_oswg797456oswg1053oswg495_img_png~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-1">1</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3996798461628297" target="_blank" rel="noopener">力压GPT-6，中国物理AI黑马登顶第一</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：新智元</p>
+                        <div class="card-footer">
+                            <span class="card-hot">25收藏</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_86eb8208241b4376894948092fa92942@5091053@ai_oswg825906oswg1053oswg495_img_png~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-2">2</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3996783462780800" target="_blank" rel="noopener">MiMo-V2.6刚发，小米罗福莉扔出MiMo-V3新架构，引用DeepSeek多项成果</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：智东西</p>
+                        <div class="card-footer">
+                            <span class="card-hot">53点赞</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_13f0983d22094264a491533c9e3db575@5091053@ai_oswg824701oswg1053oswg495_img_png~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-3">3</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3996795697844104" target="_blank" rel="noopener">中文用户全线中招，Claude网页限速，只因回复里有汉字</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：新智元</p>
+                        <div class="card-footer">
+                            <span class="card-hot">27点赞</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_fcf4c9b4d00e46fba6dd5b96c2501730@46958@ai_oswg751277oswg1053oswg495_img_png~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">4</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997049599102855" target="_blank" rel="noopener">刚刚，ChatGPT能「开口干活」了</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：新智元</p>
+                        <div class="card-footer">
+                            <span class="card-hot">13点赞</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_6c486db4e863423b823c2915ceaeed73@000000_oswg60720oswg896oswg382_img_000?x-oss-process=image/resize,m_mfit,w_600,h_400,limit_0/crop,w_600,h_400,g_center" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">5</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3996903891046535" target="_blank" rel="noopener">陆家嘴牛马，挤爆9块9健身房</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：DT商业观察</p>
+                        <div class="card-footer">
+                            <span class="card-hot">99点赞</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_1cd4fe3bd5814b3980df37c99873b795@000000@ai_oswg872389oswg2048oswg2048_img_000~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">6</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997250520125568" target="_blank" rel="noopener">“豆包宇宙”大爆发，chat还是焦点吗？</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：字母榜</p>
+                        <div class="card-footer">
+                            <span class="card-hot">30点赞</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_f133ec5c7d104b5d9c0ccd59548dcc17@46958@ai_oswg750020oswg1053oswg495_img_png~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">7</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997354832810112" target="_blank" rel="noopener">1/3价格，1/8重量，Meta新眼镜秒杀Vision Pro了？</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：爱范儿</p>
+                        <div class="card-footer">
+                            <span class="card-hot">40点赞</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_4c2a13e7fa2b4199bf0183018519a6c5@000000@ai_oswg699944oswg2048oswg2048_img_000~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">8</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997027955363971" target="_blank" rel="noopener">GPT价格砍半，比DeepSeek还便宜了</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：科技狐</p>
+                        <div class="card-footer">
+                            <span class="card-hot">7838 阅读</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_cbc3761f17254a69ab02df007be96762@000000@ai_oswg877400oswg2048oswg2048_img_000~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">9</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997075859935105" target="_blank" rel="noopener">上线12天跑赢ChatGPT，Meta爆款AI自曝老底，灵魂文件来自OpenClaw</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：新智元</p>
+                        <div class="card-footer">
+                            <span class="card-hot">35点赞</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_905a060559d74d4687a588ca81d41fd8@000000@ai_oswg734350oswg2304oswg1728_img_000~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">10</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997012657655682" target="_blank" rel="noopener">感觉全世界都在卖9块9「超长蛋挞」？“工厂干冒烟赚麻了，太腻吃一半就得扔”</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：Vista氢商业</p>
+                        <div class="card-footer">
+                            <span class="card-hot">18点赞</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_88cc91e9d3a9483d9be790c9d15801b1@5091053@ai_oswg816195oswg1053oswg495_img_png~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">11</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3996852677382274" target="_blank" rel="noopener">朱一明做VC，给DeepSeek准备了50亿</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：36氪的朋友们</p>
+                        <div class="card-footer">
+                            <span class="card-hot">5497 阅读</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_ff439abd9a7d4418afccd77d00598b5e@46958@ai_oswg859409oswg1053oswg495_img_png~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">12</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997239438168192" target="_blank" rel="noopener">汽车客运站“大变”外贸商场</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：36氪的朋友们</p>
+                        <div class="card-footer">
+                            <span class="card-hot">5351 阅读</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_06b04761d8de47d7b5d5c303c4af2a55@000000@ai_oswg791293oswg2848oswg1600_img_000~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">13</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997018573574280" target="_blank" rel="noopener">刚刚，小扎发了个“Muse”宇宙，新VR眼镜仅100g</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：智东西</p>
+                        <div class="card-footer">
+                            <span class="card-hot">28点赞</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_4833a563820249b382bde4d6a0ab7820@000000_oswg210348oswg853oswg853_img_000?x-oss-process=image/resize,m_mfit,w_600,h_400,limit_0/crop,w_600,h_400,g_center" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">14</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997468580958089" target="_blank" rel="noopener">模型之外，游戏+AI的下一道门槛在哪里？</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：游氪哩哩</p>
+                        <div class="card-footer">
+                            <span class="card-hot">5151 阅读</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_ade9b65e26924c0daaf5a45e7f7b3d91@5091053@ai_oswg1067746oswg1053oswg495_img_png~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">15</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3996845493981313" target="_blank" rel="noopener">Meta不再谈元宇宙，关键词改为“个人超级智能”</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：36氪的朋友们</p>
+                        <div class="card-footer">
+                            <span class="card-hot">4612 阅读</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_597c6a61615f4ee9973bc66f7e6ca40a@46958@ai_oswg761092oswg1053oswg495_img_png~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">16</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997239493480328" target="_blank" rel="noopener">“提车20天变旧款”，华境遭上百名车主集体维权，被吐槽“五菱不配高端”，官方扎心回应：补偿不了</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：36氪的朋友们</p>
+                        <div class="card-footer">
+                            <span class="card-hot">4296 阅读</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_fc1b1e1c1f1347109c90d80f60c694f5@46958@ai_oswg612091oswg1053oswg495_img_png~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">17</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997058409437061" target="_blank" rel="noopener">140亿美元买一人，Meta市值涨超2000亿美元：腾讯若入局Manus，能复制下一个Muse吗？</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：Tech商业</p>
+                        <div class="card-footer">
+                            <span class="card-hot">31点赞</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_3ea31cd692304b30867e186a69e2f2cf@000000@ai_oswg1227346oswg2048oswg2048_img_000~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">18</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3996927846355077" target="_blank" rel="noopener">短剧苦红果久矣</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：中国企业家杂志</p>
+                        <div class="card-footer">
+                            <span class="card-hot">17点赞</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_5ecc9e4e30fa4d2583e601d5fb582777@46958@ai_oswg676870oswg1053oswg495_img_png~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">19</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997256894977664" target="_blank" rel="noopener">大厂的AI战火，攻入硬件</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：听筒Tech</p>
+                        <div class="card-footer">
+                            <span class="card-hot">51点赞</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_251c328a75bb487ba14f68072e85644e@000000@ai_oswg751662oswg2304oswg1728_img_000~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">20</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997301613399937" target="_blank" rel="noopener">从光互联老炮到“全能卖水人&quot;，Lumentum凭什么？</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：海豚投研</p>
+                        <div class="card-footer">
+                            <span class="card-hot">10收藏</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_4183b299e597459f94f085c9e5c80f94@000000@ai_oswg1183211oswg2048oswg2048_img_000~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">21</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997003396157319" target="_blank" rel="noopener">曾席卷全网的“工厂顶流”，人设彻底崩了</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：金错刀</p>
+                        <div class="card-footer">
+                            <span class="card-hot">3826 阅读</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_37db920f4f454cb691a2701694c9c78f@46958@ai_oswg835768oswg1053oswg495_img_png~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">22</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3996973213505408" target="_blank" rel="noopener">梁文锋用沙盒开启RSI</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：字母AI</p>
+                        <div class="card-footer">
+                            <span class="card-hot">42点赞</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_cb0b40ab6e294b4bafb3bdc56b249660@46958@ai_oswg663372oswg1053oswg495_img_png~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">23</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997049598824581" target="_blank" rel="noopener">日榜第二，北大开源，强化学习数据策略接入更简单、对比更公平</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：新智元</p>
+                        <div class="card-footer">
+                            <span class="card-hot">3557 阅读</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_68e4e764b71342768ae84f7353ea7f37@46958@ai_oswg804780oswg1053oswg495_img_png~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">24</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997321117536392" target="_blank" rel="noopener">余承东首次回应，赛力斯提出主导问界，我们支持他们</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：智东西</p>
+                        <div class="card-footer">
+                            <span class="card-hot">3549 阅读</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_d76b4ac34c7c4bc2851bbc1b6f8272bb@000000@ai_oswg704728oswg2304oswg1728_img_000~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">25</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997332264571016" target="_blank" rel="noopener">中国女药王，掀了全球药王的桌子</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：华商韬略</p>
+                        <div class="card-footer">
+                            <span class="card-hot">32点赞</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_ace77ebb788c46649c5b6d83e27b7a98@000000@ai_oswg1033792oswg2048oswg2048_img_000~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">26</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997184622186372" target="_blank" rel="noopener">三个印度人如何用AI建起一座4亿美元内容工厂</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：36氪的朋友们</p>
+                        <div class="card-footer">
+                            <span class="card-hot">17点赞</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_96fc13b80b7c4eb8a26a31bf8a9fb217@000000@ai_oswg927195oswg2048oswg2048_img_000~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">27</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997018465472388" target="_blank" rel="noopener">让AI研发下一代机器人，成立三个月登顶物理AI评测榜单，押注Physical RSI</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：智东西</p>
+                        <div class="card-footer">
+                            <span class="card-hot">3280 阅读</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_d8469225788c46409ea2c9e7e8529c48@46958@ai_oswg662095oswg1053oswg495_img_png~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">28</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997072553154440" target="_blank" rel="noopener">卢伟冰谈内存涨价，小米拿AI押注高端新叙事</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：节点AI</p>
+                        <div class="card-footer">
+                            <span class="card-hot">3141 阅读</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_5b72211cb99c47c8873934c39e6dcfa1@11416942_oswg77803oswg1053oswg495_img_jpeg?x-oss-process=image/resize,m_mfit,w_600,h_400,limit_0/crop,w_600,h_400,g_center" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">29</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997245003370369" target="_blank" rel="noopener">AI真正的“硬仗”，是对增长负责</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：晓曦</p>
+                        <div class="card-footer">
+                            <span class="card-hot">16点赞</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_78e35ea280034cb8b370f1f7bf30225b@000000@ai_oswg819855oswg2048oswg2048_img_000~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">30</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997036014129283" target="_blank" rel="noopener">最提倡用AI的CEO，如今被AI的“垃圾手榴弹”炸懵了</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：极客邦科技InfoQ</p>
+                        <div class="card-footer">
+                            <span class="card-hot">2925 阅读</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_50380dab78aa4c989b469ba41ca2cb55@000000_oswg72207oswg1280oswg544_img_000?x-oss-process=image/resize,m_mfit,w_600,h_400,limit_0/crop,w_600,h_400,g_center" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">31</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3996809190117505" target="_blank" rel="noopener">AlphaFold救不了AI制药</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：晓曦</p>
+                        <div class="card-footer">
+                            <span class="card-hot">15点赞</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260925/v2_e9f653abeebb402fa93d3b6282783925@000000@ai_oswg899879oswg2048oswg2048_img_000~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">32</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3998104073965445" target="_blank" rel="noopener">难吃的飞机餐，终于要洗心革面了？</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：新周刊</p>
+                        <div class="card-footer">
+                            <span class="card-hot">13点赞</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_68ce54b183e54c95921c502f3859bc72@46958@ai_oswg653749oswg1053oswg495_img_png~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">33</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997294526844807" target="_blank" rel="noopener">prompt工程师，一个新兴职业的崛起与消失</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：寻空</p>
+                        <div class="card-footer">
+                            <span class="card-hot">29点赞</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_ff608b83e8ae4746996c76ce4ae418a3@46958@ai_oswg742152oswg1053oswg495_img_png~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">34</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997109897385861" target="_blank" rel="noopener">从妙可蓝多到钟薛高，那些明星品牌创始人正在离场</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：蓝鲨消费</p>
+                        <div class="card-footer">
+                            <span class="card-hot">2764 阅读</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_325ce4169d7d4fc5be3bb3416951f40f@46958@ai_oswg814686oswg1053oswg495_img_png~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">35</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997354929901703" target="_blank" rel="noopener">阿里，又套现34亿</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：直通IPO</p>
+                        <div class="card-footer">
+                            <span class="card-hot">2756 阅读</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_6255fbacfdad47f6ae464c9616c89bcf@46958@ai_oswg679762oswg1053oswg495_img_png~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">36</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997265313929093" target="_blank" rel="noopener">普通用户成了AI的负资产？</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：木禾商业财经</p>
+                        <div class="card-footer">
+                            <span class="card-hot">33点赞</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260925/v2_e819b58044c8499d865df28be8f00ca0@000000@ai_oswg672294oswg2304oswg1728_img_000~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">37</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3998083291140230" target="_blank" rel="noopener">月饼，还是炒着最好吃</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：冯仑风马牛</p>
+                        <div class="card-footer">
+                            <span class="card-hot">32点赞</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_c1b3f33e3b204f15888fbc196de87b8b@6208419@ai_oswg794741oswg1053oswg495_img_png~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">38</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3996809017528455" target="_blank" rel="noopener">迈向3万亿，武汉要造一个“首位产业”</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：城市进化论</p>
+                        <div class="card-footer">
+                            <span class="card-hot">2671 阅读</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_b2a7e57fd3b349488106194bad3ca9f9@000000@ai_oswg714928oswg2304oswg1728_img_000~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">39</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997264597536643" target="_blank" rel="noopener">减重，大厂的下一个阳谋？</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：潮汐商业评论</p>
+                        <div class="card-footer">
+                            <span class="card-hot">10收藏</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_7439dd2d32454ea9a33f015257dc62d5@46958@ai_oswg767419oswg1053oswg495_img_png~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">40</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997143103311749" target="_blank" rel="noopener">AI的热钱与未来，此刻属于中国版Alexandr Wang们</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：硅星人Pro</p>
+                        <div class="card-footer">
+                            <span class="card-hot">2656 阅读</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_7ffcc07ac6b94131a303f88291164789@000000@ai_oswg678266oswg2304oswg1728_img_000~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">41</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997213389639808" target="_blank" rel="noopener">车价一降再降，为何消费者反而花得更多？</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：车市物语</p>
+                        <div class="card-footer">
+                            <span class="card-hot">2517 阅读</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_be5d9cefac8b449786dbec1cc5c41ea0@000000@ai_oswg856849oswg2048oswg2048_img_000~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">42</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997069081432198" target="_blank" rel="noopener">9月30日起，花呗、白条等不能再“玩套路”了</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：鳌头财经</p>
+                        <div class="card-footer">
+                            <span class="card-hot">2471 阅读</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_155a6162416e47ae8b08444e2d06655b@6208419_oswg338354oswg1053oswg495_img_png?x-oss-process=image/resize,m_mfit,w_600,h_400,limit_0/crop,w_600,h_400,g_center" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">43</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3996867105296258" target="_blank" rel="noopener">二环低密抬板来了！西二环保利京华曜案名正式发布</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：未来城不落</p>
+                        <div class="card-footer">
+                            <span class="card-hot">25点赞</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_1bf4fcd54c2c4d08b9fc16ddbd60a3ff@46958@ai_oswg672601oswg1053oswg495_img_png~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">44</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997294414679937" target="_blank" rel="noopener">李彦宏的AI课题：百度遇上“快播式”老剧本</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：36氪的朋友们</p>
+                        <div class="card-footer">
+                            <span class="card-hot">18点赞</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_8a8e246f7b4248d4a2d050f62de2b5de@46958@ai_oswg892104oswg1053oswg495_img_png~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">45</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997294281248647" target="_blank" rel="noopener">我，成分党，永远吃不明白</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：36氪的朋友们</p>
+                        <div class="card-footer">
+                            <span class="card-hot">2371 阅读</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_91f742e874b54090b5f6046e84a518f9@46958@ai_oswg688397oswg1053oswg495_img_png~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">46</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997299332945538" target="_blank" rel="noopener">超级入口“复仇”，Muse登顶腾讯阿里大涨</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：铑科技</p>
+                        <div class="card-footer">
+                            <span class="card-hot">2325 阅读</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_83454e24fc394faf8460279afdf49fee@46958@ai_oswg773102oswg1053oswg495_img_png~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">47</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997091368474505" target="_blank" rel="noopener">“电鸡之王”雅迪，也想当“非洲之王”</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：金角财经</p>
+                        <div class="card-footer">
+                            <span class="card-hot">2294 阅读</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_e678b40c718c48f19d4621d65530f0b4@000000@ai_oswg749613oswg2304oswg1728_img_000~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">48</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3996947298996102" target="_blank" rel="noopener">遇到一群国庆加班，却不要加班费的“人”</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：猎聘</p>
+                        <div class="card-footer">
+                            <span class="card-hot">2294 阅读</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_7618b62747144e42805b6e652f9136ca@000000@ai_oswg876417oswg2048oswg2048_img_000~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">49</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997150867165057" target="_blank" rel="noopener">被忽视的游戏热土：土耳其，闷声赚大钱</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：霞光社</p>
+                        <div class="card-footer">
+                            <span class="card-hot">24点赞</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://img.36krcdn.com/hsossms/20260924/v2_f0023f9cc2344ba28cd675cdf66a02a5@46958@ai_oswg759279oswg1053oswg495_img_png~tplv-1marlgjv7f-ai-v3:600:400:600:400:q70.jpg" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">50</span>
+                            <h3 class="card-title">
+                                <a href="https://36kr.com/p/3997156639559810" target="_blank" rel="noopener">AI剧上瘾实录：从“什么垃圾”到“再来一集”</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">作者：文娱Talk</p>
+                        <div class="card-footer">
+                            <span class="card-hot">2256 阅读</span>
+                            <span>36氪</span>
+                        </div>
+                    </div>
+                </article>
+
+        </div>
+    </div>
+</div><div class="tab-content " id="tab-tab1">
+    <div class="section section-baidu">
+        <div class="section-header">
+            <div class="section-icon"></div>
+            <h2 class="section-title">百度</h2>
+        </div>
+        <div class="cards">
+            
+                <article class="card">
+                    
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-1">1</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E4%B9%A0%E8%BF%91%E5%B9%B3%E5%90%8C%E7%BE%8E%E5%9B%BD%E6%80%BB%E7%BB%9F%E7%89%B9%E6%9C%97%E6%99%AE%E4%BC%9A%E8%B0%88&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">习近平同美国总统特朗普会谈</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">790万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-2">2</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E4%B9%A0%E8%BF%91%E5%B9%B3%E5%92%8C%E5%BD%AD%E4%B8%BD%E5%AA%9B%E5%87%BA%E5%B8%AD%E6%AC%A2%E8%BF%8E%E5%AE%B4%E4%BC%9A&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">习近平和彭丽媛出席欢迎宴会</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">780万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/455dbf5ba6fd04bb6495f56c2e0c5e98" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-3">3</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E4%B9%A0%E8%BF%91%E5%B9%B3%E5%9C%A8%E6%AC%A2%E8%BF%8E%E5%AE%B4%E4%BC%9A%E7%A5%9D%E5%A4%A7%E5%AE%B6%E4%B8%AD%E7%A7%8B%E5%BF%AB%E4%B9%90&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">习近平在欢迎宴会祝大家中秋快乐</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">当地时间9月24日晚，习近平出席特朗普举行的欢迎宴会并发表祝酒辞，谈到中国人民正在欢度中秋，向中美各界致以节日祝福。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">771万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/9dc9678e0f93800d8567c32625618e30" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">4</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E8%B7%9F%E7%9D%80%E5%8F%A4%E8%AF%97%E8%BF%BD%E6%9C%88%E4%BA%AE&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">跟着古诗追月亮</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">中秋的源头在哪里？月亮上住着谁？古人怎么过节、吃什么、玩什么？翻开一本古诗集，月亮从字里行间升起。让我们跟着古诗追月亮，一起寻找文物里的中秋。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">761万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/22129e4a84b59e54cd3ca484ab9831e8" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">5</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E7%89%B9%E6%9C%97%E6%99%AE%E5%90%AC%E5%88%B0%E5%A4%A7%E7%86%8A%E7%8C%AB%E5%B0%86%E8%90%BD%E6%88%B7%E7%BE%8E%E5%9B%BD%E7%AC%91%E4%BA%86&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">特朗普听到大熊猫将落户美国笑了</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">大熊猫是中美两国人民友谊的使者。在白宫欢迎仪式上，当习近平主席宣布大熊猫“平平”、“福双”将同美国人民见面时，特朗普总统笑着点头致意。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">752万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/339bf668de76a280afe012baa9c25416" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">6</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E5%B9%B3%E5%9D%87%E6%9C%88%E8%96%AA16149%E5%85%83+%E8%BF%99%E7%B1%BB%E4%BA%BA%E6%89%8D%E7%B4%A7%E7%BC%BA&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">平均月薪16149元 这类人才紧缺</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">今年1到8月，无人机工程师招聘职位数同比上涨26%，平均招聘月薪为16149元，无人机群飞行规划员岗位规模近五年增近8倍。产业急需懂装配、会编程的复合型人才。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">742万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">7</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E5%AD%99%E9%A2%96%E8%8E%8E%E7%8E%8B%E6%A5%9A%E9%92%A6%E9%9B%B6%E5%B0%81%E5%BC%A0%E6%9C%AC%E7%BE%8E%E5%92%8C%E6%9D%BE%E5%B2%9B%E8%BE%89%E7%A9%BA&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">孙颖莎王楚钦零封张本美和松岛辉空</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">733万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">8</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E4%B8%AD%E7%A7%8B%E8%8A%82&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">中秋节</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">723万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/bee737b291738be191920141befe00ac" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">9</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E9%A9%AC%E6%96%AF%E5%85%8B%E6%AF%8D%E4%BA%B2%EF%BC%9A%E6%88%91%E5%96%9C%E6%AC%A2%E5%8E%BB%E4%B8%AD%E5%9B%BD&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">马斯克母亲：我喜欢去中国</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">北京时间9月24日，美国企业家埃隆·马斯克的母亲梅耶·马斯克在社交媒体X上转发了儿子马斯克接受采访的视频，并称赞中国“干净又安全”，直言自己喜欢去中国。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">714万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/5a702a3ed833d9d23bc61b5f9c296175" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">10</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E4%B8%96%E7%95%8C%E6%8A%80%E8%83%BD%E5%A4%A7%E8%B5%9B+%E4%B8%BA%E4%BA%86%E6%9B%B4%E5%A5%BD%E7%9A%84%E6%9C%AA%E6%9D%A5&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">世界技能大赛 为了更好的未来</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">9月24日，第48届世界技能大赛进入第二天。当“照护、木工、口腔修复”这些与生活息息相关的技能出现在世界技能大赛的赛场，同场竞技的选手们比的究竟是什么？这些手工技艺如何改变我们的未来生活？总台评论员白岩松为您带来观察分析。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">704万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/4affc6af0e4b0e3655399cf0e68063a6" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">11</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E5%90%84%E7%95%8C%E4%BA%BA%E5%A3%AB%E9%BD%90%E8%81%9A%E4%B8%80%E5%A0%82%E6%AC%A2%E8%BF%8E%E4%B9%A0%E4%B8%BB%E5%B8%AD%E5%88%B0%E8%AE%BF&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">各界人士齐聚一堂欢迎习主席到访</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">当地时间9月24日晚，美国总统特朗普和夫人在白宫为中国国家主席习近平和夫人举行欢迎宴会。美国各界人士代表齐聚一堂，特斯拉首席执行官马斯克、亚马逊创始人贝索斯、英伟达首席执行官黄仁勋等出席活动。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">695万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/8ac4e32ba1b3f8270fb0b505025c307e" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">12</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E9%99%8C%E7%94%9F%E5%BF%AB%E9%80%92%E5%AF%84%E6%9D%A5%E7%A4%BC%E5%93%81%E5%8D%A1%EF%BC%9F%E8%AF%AF%E5%8C%BA%E8%A6%81%E6%B3%A8%E6%84%8F&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">陌生快递寄来礼品卡？误区要注意</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">中秋、国庆双节将至，不少人收到了一份“从天而降”的快递——自己明明没有网购，却收到一个装着湿巾等小物件外加一张“双节礼品卡”的包裹。不花一分钱扫个码就能领取年货大礼包？千万别信！此类事存在着两大认知误区，一文解读！</p>
+                        <div class="card-footer">
+                            <span class="card-hot">685万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/1afcce65f89d470e75a24d2fb7e7e60c" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">13</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E6%9A%B4%E6%B6%A81450%25%EF%BC%81%E8%BF%99%E4%B8%AA%E4%B8%AD%E7%A7%8B%E7%88%86%E6%AC%BE%E5%85%A8%E7%90%83%E4%B8%8B%E5%8D%95&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">暴涨1450%！这个中秋爆款全球下单</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">中秋节来临，餐桌上的“双向奔赴”如火如荼。进口生鲜迎来小高峰，出口节庆产品订单也屡创新高。其中，今年前8个月，盘锦河蟹出口量达482吨，同比增长14.5倍。这个中秋，舌尖美味与文化符号正在双向流动。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">675万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/e17a91522cf1be8c482b213568d200b1" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">14</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E7%94%A8%E6%89%8B%E6%9C%BA%E9%92%A2%E5%8C%96%E8%86%9C%E7%9A%84%E5%8F%97%E5%AE%B3%E8%80%85%E5%87%BA%E7%8E%B0%E4%BA%86&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">用手机钢化膜的受害者出现了</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">近期，多位网友在社交平台反映被手机的钢化膜扎伤，看似日常的手机配件，有时竟化身伤人利器，相关话题引发广泛关注，记者采访了多位受害者，一起来看。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">666万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/c83bb759ff0d4610ded58fbb73889a4a" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">15</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=4.5%E7%B1%B3%E9%95%BF%E8%99%AB%E4%BB%8E%E7%94%B7%E5%AD%90%E4%BD%93%E5%86%85%E6%8E%92%E5%87%BA&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">4.5米长虫从男子体内排出</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">近日，武汉市金银潭医院接诊患者小金。小金因长期食用生鱼片感染阔节裂头绦虫，经驱虫治疗后排出一条4.5米长成虫。此前，小金如厕时发现一米多长虫节就诊，医生追溯得知其有生食习惯。目前小金已顺利出院，医生提醒需警惕来源不明的生食或未熟淡水鱼。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">657万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/9c5a02e5a1afeb7a89c9e102f0b35337" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">16</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E7%99%BD%E5%AE%AB%E5%93%8D%E8%B5%B7%E2%80%9C%E6%9C%88%E4%BA%AE%E4%BB%A3%E8%A1%A8%E6%88%91%E7%9A%84%E5%BF%83%E2%80%9D&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">白宫响起“月亮代表我的心”</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">当地时间9月24日，国家主席习近平和夫人彭丽媛将在白宫出席美国总统特朗普和夫人梅拉尼娅举行的欢迎宴会。白宫响起“月亮代表我的心”。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">646万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/c8484cfdae958d151c32876a803b19b7" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">17</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E7%99%BD%E5%AE%AB%E5%A2%99%E4%B8%8A%E6%82%AC%E6%8C%82%E4%B8%AD%E7%BE%8E%E5%85%83%E9%A6%96%E6%8F%A1%E6%89%8B%E7%85%A7%E7%89%87&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">白宫墙上悬挂中美元首握手照片</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">白宫一楼的墙上，悬挂着特朗普总统访华时，习近平主席同他握手的照片。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">637万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/b7cd56b3329a5b8181de4e0c1e202cf0" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">18</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E7%AC%AC%E4%B8%80%E6%89%B9%E5%96%9D%E6%B3%B0%E5%A5%B6%E7%9A%84%E2%80%9C%E5%8F%97%E5%AE%B3%E8%80%85%E2%80%9D%E5%87%BA%E7%8E%B0%E4%BA%86&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">第一批喝泰奶的“受害者”出现了</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">近期泰式奶茶（泰奶）爆火，但已有部分人喝后出现心悸、头晕、失眠等不适。科普解读指出，泰奶因茶粉颗粒细小、萃取充分，咖啡因含量高于普通奶茶甚至接近美式。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">628万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/e0faecca48a42d5a88f3b4cc84813155" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">19</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E5%93%88%E8%90%A8%E5%85%8B%E6%96%AF%E5%9D%A6%E5%86%9B%E6%BC%94%E7%AA%81%E5%8F%91%E4%BA%8B%E6%95%85%E8%87%B412%E6%AD%BB&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">哈萨克斯坦军演突发事故致12死</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">哈萨克斯坦军队24日在里海沿岸曼格斯套州进行演习期间发生事故，造成12名军人丧生。哈萨克斯坦总统托卡耶夫向丧生军人的亲人表示慰问。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">618万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/11c149002c2df8d234315b12f1bc5896" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">20</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E9%A9%AC%E6%96%AF%E5%85%8B%E9%BB%84%E4%BB%81%E5%8B%8B%E7%AD%89%E5%87%BA%E5%B8%AD%E7%99%BD%E5%AE%AB%E6%AC%A2%E8%BF%8E%E5%AE%B4%E4%BC%9A&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">马斯克黄仁勋等出席白宫欢迎宴会</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">当地时间9月24日晚，国家主席习近平和夫人彭丽媛在白宫出席美国总统特朗普和夫人梅拉尼娅举行的欢迎宴会。马斯克、黄仁勋、苏世民、奥尔特曼等出席白宫欢迎宴会。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">609万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/8c4e39c93cdc44593572b7b55db75b93" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">21</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E7%99%BD%E5%AE%AB%E5%85%AC%E5%B8%83%E5%9B%BD%E5%AE%B4%E8%8F%9C%E5%8D%95%E4%B8%8E%E8%A3%85%E9%A5%B0&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">白宫公布国宴菜单与装饰</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">当地时间9月24日晚，国家主席习近平和夫人彭丽媛乘车抵达白宫，出席美国总统特朗普和夫人梅拉尼娅举行的欢迎宴会。美国第一夫人办公室当天公布了晚宴菜单和现场布置等细节。白宫将此次菜单概括为：以美国食材为主，同时融入中国元素，希望将两国饮食传统结合起来。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">600万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/8083e42234e2659b57e294d8bdfaeec8" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">22</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E7%8E%8B%E7%A5%96%E8%B4%A4%E5%9B%9E%E5%BA%94%E5%AE%B9%E8%B2%8C%E4%BA%89%E8%AE%AE%EF%BC%9A%E6%88%91%E5%B7%B2%E7%BB%8F60%E5%B2%81%E4%BA%86&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">王祖贤回应容貌争议：我已经60岁了</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">近日，王祖贤在隐退22年后的首场访谈中回应容貌争议：“我已经60岁了”，观众印象仍停留在她19岁时的银幕形象；她还澄清息影并非因情伤。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">590万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/3a6789a600ba630a0ca6ee6e430fd757" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">23</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E4%B8%AD%E7%BE%8E%E5%85%83%E9%A6%96%E5%A4%AB%E4%BA%BA%E5%8F%82%E8%A7%82%E5%9B%BD%E7%AB%8B%E4%BA%9A%E6%B4%B2%E8%89%BA%E6%9C%AF%E5%8D%9A%E7%89%A9%E9%A6%86&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">中美元首夫人参观国立亚洲艺术博物馆</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">当地时间9月24日中午，国家主席习近平夫人彭丽媛在华盛顿同美国总统特朗普夫人梅拉尼娅参观国立亚洲艺术博物馆。彭丽媛对美方近年来多次向中方返还中国文物表示赞赏，希望中美双方继续加强文化交流和文化遗产保护合作，增进两国人民友好。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">580万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/d0b228a5c2d661f9e6812f78a3e81556" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">24</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E7%8E%8B%E7%9A%93%E5%9B%9E%E5%BA%94%E5%9B%BD%E4%B9%92%E7%94%B7%E5%9B%A2%E4%B8%8D%E6%95%8C%E6%97%A5%E6%9C%AC%E9%98%9F%E4%B8%A2%E5%86%A0&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">王皓回应国乒男团不敌日本队丢冠</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">主教练王皓回应男团丢冠，表示球队现在正处于新老交替的重要环节，需要给年轻运动员试错的空间。他呼吁媒体和球迷善待球员和教练，指出球员承受比赛胜负和外界质疑的压力，教练组也扎根球队无暇陪伴家庭。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">570万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/ce2a73222ec52b3ef727ccf9ff449e2e" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">25</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E4%BB%A5%E8%89%B2%E5%88%97%E6%80%BB%E7%90%86%E8%81%94%E5%A4%A7%E8%AE%B2%E8%AF%9D+%E5%8F%B0%E4%B8%8B%E5%BF%AB%E8%B5%B0%E7%A9%BA%E4%BA%86&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">以色列总理联大讲话 台下快走空了</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">当地时间9月24日下午（北京时间9月25日凌晨），以色列总理内塔尼亚胡在第81届联合国大会一般性辩论上发表讲话，现场大多数国家代表离场抗议，他将其称为“懦夫”。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">561万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/2b65cddd5d0fa76cb4a6e35606443831" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">26</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E5%A5%B3%E6%BC%94%E5%91%98%E7%8E%8B%E6%9C%B1%E6%82%A6%E7%B4%A7%E6%80%A5%E9%81%93%E6%AD%89&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">女演员王朱悦紧急道歉</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">9月24日，《微微一笑很倾城》更名《一笑倾城》上线，女主贝微微被AI换脸为演员王朱悦，引发争议。王朱悦发文承认本人授权换脸并道歉：“毁了大家心中的角色”。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">551万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/d3704afee97c947dc82259f2ab42d666" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">27</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E6%9D%8E%E5%98%89%E6%98%8E%E8%BF%981%E4%B8%87%E5%85%83%E6%B8%B8%E6%9C%AC%E6%98%8C%E7%9B%B4%E6%8E%A5%E6%8D%90%E4%BA%86&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">李嘉明还1万元游本昌直接捐了</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">近日，演员李嘉明哽咽追忆游本昌，称其像父亲般关心自己。此前他在北漂低谷期遇父亲生病无钱医治，游本昌第一时间拿出1万元现金且无需归还。李嘉明称：“后来我还了钱，游老师直接把钱捐了。”</p>
+                        <div class="card-footer">
+                            <span class="card-hot">541万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/894bfb531f6c5a1dd0e4dcfb8333bdbb" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">28</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E9%AB%98%E9%93%81%E7%AB%99%E5%AE%89%E6%A3%80%E4%BB%AA%E6%89%AB%E5%88%B0%E5%A5%BD%E5%A4%9A%E2%80%9C%E5%B0%8F%E5%9C%86%E7%90%83%E2%80%9D&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">高铁站安检仪扫到好多“小圆球”</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">中秋前夕，云南宣威站安检仪频现宣威火腿月饼。起因是该非遗火腿月饼备受旅客青睐，许多人打包乘车带回家。为此，宣威站不仅在安检区配备胶带等工具方便打包，还通过加开列车等方式增加运能保障出行。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">531万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/9e971a7cbb0a4e1fbfcdf2c019583779" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">29</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E8%83%96%E4%B8%9C%E6%9D%A5%E5%A4%A7%E6%9C%88%E9%A5%BC%E9%9A%BE%E6%8A%A2&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">胖东来大月饼难抢</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">9月24日，记者在新乡胖东来探访发现，顾客购物车堆成小山，有百公里外老板开车来进货。此前，胖东来网红大月饼改为线上限购销售，工作人员称每天上架几千份，两三分钟便抢空，引发关注。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">522万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/88d7a181efcb195457e2254476ba8f40" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">30</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E4%B8%89%E4%BA%BA%E6%93%8D%E7%BA%B5%E8%82%A1%E5%B8%82%E8%8E%B7%E5%88%A90%E5%85%83%E8%A2%AB%E7%BD%9A800%E4%B8%87&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">三人操纵股市获利0元被罚800万</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">9月24日，证监会披露，陈欢、周厚禄、李萍萍三人控制多个账户操纵股价，虽无违法所得，仍被合计罚款800万元并禁入市场2至3年。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">512万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/2b9ee8e1a5fa443c37d12f8df9ab2b6f" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">31</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E6%9D%8E%E4%B8%80%E6%A1%90%E5%8C%97%E8%88%9E%E4%B8%A5%E9%80%89%E7%9A%84%E5%90%AB%E9%87%91%E9%87%8F%E8%BF%98%E5%9C%A8%E4%B8%8A%E5%8D%87&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">李一桐北舞严选的含金量还在上升</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">中秋奇妙游中，李一桐切换三套造型，以青赤黄白黑五方正色为视觉核心，用歌声和舞蹈演绎传统五色，从山水到生活展开色彩叙事，宛如仙女下人间，北舞严选含金量还在上升。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">504万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/34a9110ae943581ac95b664bf88624e7" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">32</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E9%82%93%E4%BA%9A%E8%90%8D%EF%BC%9A%E7%8E%8B%E6%A5%9A%E9%92%A6%E6%B2%A1%E6%9C%89%E4%BB%BB%E4%BD%95%E5%AE%B9%E9%94%99%E7%A9%BA%E9%97%B4&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">邓亚萍：王楚钦没有任何容错空间</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">在9月24日进行的爱知·名古屋亚运会乒乓球团体决赛中，国乒男团以2:3不敌日本队，无缘九连冠。赛后前乒乓球运动员邓亚萍表示：排阵相对较凶，王楚钦没有任何容错空间。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">493万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/b4cd158dbe7e718bea4bcf4dc99ed54c" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">33</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E9%A3%9E%E6%9C%BA%E7%BB%B4%E4%BF%AE%E4%BA%BA%E6%89%8D%E7%BC%BA%E5%8F%A3%E8%B6%8515%E4%B8%87&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">飞机维修人才缺口超15万</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">当前中国飞机维修能力正从引进走向自主，发动机等核心部件逐渐实现国内维修。截至2025年底，国内累计颁发9.25万份机务执照，但空客预测2024-2043年中国仍需新增15.5万名维修技术人员，能修核心件的人才严重紧缺，行业呼吁完善薪酬与晋升体系。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">484万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/85061f4a12114392f619564cf0950165" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">34</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E5%A5%B3%E7%94%9F%E6%9C%AA%E4%B8%8A%E7%8F%AD%E5%8D%B4%E6%9C%896%E4%BB%BD%E7%A4%BE%E4%BF%9D%E6%97%A0%E6%B3%95%E8%80%83%E7%BC%96&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">女生未上班却有6份社保无法考编</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">9月24日，“硕士生因被偷缴社保无法考编”一事引发关注。应届毕业生小李从未到任何公司任职，但在报考某单位应届生岗位时，却因有职工社保缴费记录导致报考失败。经查询，竟有6家建筑公司为其缴纳社保。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">474万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/d19602c4f591db1ad37192b0bf46c2cc" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">35</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E3%80%8A%E5%85%B0%E9%A6%99%E5%A6%82%E6%95%85%E3%80%8B%E5%B8%82%E5%8D%A0%E7%8E%8742.6%25&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">《兰香如故》市占率42.6%</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">目前，由谭松韵主演的电视剧《兰香如故》正在热播中，其市占率创下新高，已达42.6%。此前该剧开播初不被看好，如今打脸多方预测。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">465万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/91313c7c3845542a49095e1382ab68f5" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">36</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E5%93%A5%E4%BC%A6%E6%AF%94%E4%BA%9A%E5%AE%A3%E5%B8%83%E4%B8%8E%E4%BC%8A%E6%9C%97%E6%96%AD%E4%BA%A4&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">哥伦比亚宣布与伊朗断交</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">当地时间9月24日，哥伦比亚外交部发表声明，宣布自9月19日起正式与伊朗断绝外交关系。声明指出，该决定基于哥伦比亚在国家和地区安全及打击跨国犯罪等方面的外交政策原则。同时强调，断绝外交关系并不意味着断绝两国领事关系。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">456万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/103ff2584e66a21f29f7761522e2e260" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">37</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E4%BC%81%E4%B8%9A%E7%BB%9930%E5%B9%B4%E5%B7%A5%E9%BE%84%E8%80%81%E5%91%98%E5%B7%A5%E5%8F%91%E4%B8%87%E5%85%83%E5%A5%96%E5%8A%B1&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">企业给30年工龄老员工发万元奖励</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">近日，河南洛阳中成集团40周年庆给30年工龄老员工发万元奖励。据悉，11名满30年工龄员工获万元奖励，10至30年工龄的255名员工获电动车等。此外，公司每位员工还收到1000元购物卡。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">447万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/8a06f1160ebb23bae015779568050f68" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">38</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E2%80%9C%E5%AD%99%E5%8D%93%E8%A2%AB%E6%8B%90%E6%A1%88%E2%80%9D%E4%BA%BA%E8%B4%A9%E5%AD%90%E9%A2%84%E8%AE%A1%E4%BB%8A%E6%97%A5%E5%87%BA%E7%8B%B1&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">“孙卓被拐案”人贩子预计今日出狱</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">9月24日晚，孙海洋对记者表示，拐走他儿子孙卓的人贩子吴某龙于9月25日刑满出狱，他有些担心家人的安全。此前，深圳市南山区人民法院以拐骗儿童罪判处吴某龙有期徒刑5年。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">436万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/337a285ffb4973bd54a5202c2bec3c2e" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">39</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=2600%E4%BA%BF%E5%AD%98%E5%82%A8%E9%BE%99%E5%A4%B4%E5%A4%A7%E8%82%A1%E4%B8%9C%E5%A5%97%E7%8E%B04.7%E4%BA%BF&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">2600亿存储龙头大股东套现4.7亿</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">9月24日，存储芯片龙头澜起科技AH股同步下挫，A股跌3.97%报214.5元/股，最新市值2651亿元。同日盘后公告，第三大股东WLT Partners,L.P.因股权激励行权资金需要，拟减持不超233万股，套现约4.78亿元。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">425万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/f61c800f1097845473bcb0f4c8000e08" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">40</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E5%9D%90%E9%AB%98%E9%93%81%E7%94%A8%E4%B8%8D%E7%94%A8%E4%B8%80%E6%AC%A1%E6%80%A7%E5%BA%A7%E6%A4%85%E5%A5%97%E5%9E%AB&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">坐高铁用不用一次性座椅套垫</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">9月24日上午，针对网友热议的“坐高铁是否需自带一次性座椅套垫”，铁路12306回应称，高铁坐垫正常120至180天更换清洗，卧铺床单一客一换，平时脏污会清理。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">416万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/e20a2c7ec864cb9f53ccac7fd361ca8c" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">41</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E4%B8%80%E5%9D%97%E6%9C%88%E9%A5%BC%E7%AD%89%E4%BA%8E%E5%87%A0%E7%A2%97%E9%A5%AD&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">一块月饼等于几碗饭</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">中秋佳节，专家提示100克月饼热量相当于4碗米饭。因月饼具有高热量、高脂肪、高糖分的特点，糖尿病、高血压及高血脂、胃肠疾病患者与儿童需严格控制食用量。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">407万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/46d2871d8d1b82688bea8c1a7ba5a309" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">42</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E7%AC%AC%E4%B8%80%E6%B3%A2%E5%87%BA%E5%8F%91%E7%9A%84%E5%A4%A7%E8%81%AA%E6%98%8E%E5%A0%B5%E8%B7%AF%E4%B8%8A%E4%BA%86&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">第一波出发的大聪明堵路上了</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">9月24日凌晨，广昆高速肇庆段返乡车流出现多处堵塞。许多试图提前出发的车主遭遇拥堵，网友调侃：“第一波出发的大聪明堵路上了！”</p>
+                        <div class="card-footer">
+                            <span class="card-hot">399万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/bf855691cae5aeabeb81e88fa6cdba80" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">43</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E9%87%91%E6%AD%A3%E6%81%A9%E5%B7%B2%E8%8E%B7%E9%82%80%E8%AE%BF%E9%97%AE%E4%BF%84%E7%BD%97%E6%96%AF&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">金正恩已获邀访问俄罗斯</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">9月24日，俄罗斯副外长鲁坚科表示，朝鲜最高领导人金正恩已获邀访问俄罗斯，具体日期将通过外交渠道商定。此前，双方于2024年6月签署条约，将俄朝关系提升至结盟高度。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">390万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/c63004a6bd727331cc37a1bcb015a1a5" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">44</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E4%B8%81%E5%AE%81%E4%B8%BA%E5%AD%99%E9%A2%96%E8%8E%8E%E6%88%B4%E4%B8%8A%E9%87%91%E7%89%8C&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">丁宁为孙颖莎戴上金牌</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">北京时间9月24日，名古屋亚运会乒乓球女团决赛，中国队获得金牌。丁宁为国乒女团佩戴亚运金牌时全场沸腾，两代国乒人同框，赛场传承具象化了！</p>
+                        <div class="card-footer">
+                            <span class="card-hot">377万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/7079819e3a20186c6f9b93ec3e116965" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">45</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E7%89%B9%E6%9C%97%E6%99%AE%E5%9C%A8%E6%AC%A2%E8%BF%8E%E5%AE%B4%E4%BC%9A%E4%B8%8A%E5%8F%91%E8%A1%A8%E8%87%B4%E8%BE%9E&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">特朗普在欢迎宴会上发表致辞</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">当地时间9月24日晚，国家主席习近平和夫人彭丽媛在白宫出席美国总统特朗普和夫人梅拉尼娅举行的欢迎宴会。特朗普总统发表致辞。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">371万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/ca7f11b1be42bbbd1d312abb4e188ac7" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">46</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E4%B8%AD%E5%9B%BD%E4%BA%BA%E4%BD%95%E6%97%B6%E7%99%BB%E6%9C%88&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">中国人何时登月</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">中国人什么时候能登上月球？目标已经明确：2030年前，中国人首次登上月球。怎么登呢？不是一发火箭直接送过去，是“两发火箭、环月对接”。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">362万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/565b54e9e268d9841403ca430c1d213a" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">47</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E6%9E%97%E8%AF%97%E6%A0%8B%E8%92%AF%E6%9B%BC3%E6%AF%940%E5%BE%B7%E8%B5%9B%E6%A0%BC%E5%B0%94%E5%B8%95%E5%BE%B7&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">林诗栋蒯曼3比0德赛格尔帕德</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">9月25日上午，2026亚运会混双1/4决赛，林诗栋/蒯曼3-0战胜德赛/格尔帕德，晋级四强。局分：11-5，12-10，11-9。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">352万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/4a5f427b8206812efcc696f5a1f1b41f" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">48</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E7%BD%91%E7%BA%A2%E8%B4%9F%E9%87%8D%E6%89%8B%E7%8E%AF+%E4%BC%A4%E5%85%B3%E8%8A%82&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">网红负重手环 伤关节</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">近日，号称能“轻松瘦手臂”的网红负重手环热销。多位专家解读指出，负重手环无法实现局部减脂，仅能提供轻度肌耐力刺激。若长期在静态场景中佩戴，易导致关节受压，引发腱鞘炎等劳损病症。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">338万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/34c210a17294fdc923daced0d0df94f0" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">49</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E8%A2%AB%E6%9E%97%E4%BE%9D%E8%BD%AE%E3%80%8A%E6%9C%88%E5%85%89%E3%80%8B%E4%B8%AD%E7%A7%8B%E6%9F%94%E6%83%85%E7%9A%84%E4%B8%80%E9%9D%A2%E6%89%93%E5%8A%A8&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">被林依轮《月光》中秋柔情的一面打动</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">在河南《中秋奇妙游》节目中，林依轮一首《月光》唱出了乡愁思念，情感好充沛！其演唱画面从古代跨越至现代，传达了中国人传统的书信传音与游子对家乡的思念，都快把观众唱哭了。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">333万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/ea26c3c15dbc3ed9a62a2e2b6b0597cd" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">50</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E5%9B%BD%E4%B9%92%E7%94%B7%E9%98%9F%E5%9B%9E%E5%BA%94%E4%BA%9A%E8%BF%90%E4%BC%9A%E5%B8%83%E9%98%B5&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">国乒男队回应亚运会布阵</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">9月24日晚，中国队在名古屋亚运会乒乓球男团决赛中2:3负于日本队，后者时隔60年夺冠。赛后布阵引关注，男队主教练王皓回应称，启用温瑞博上二单是半决赛就考虑的安排。王皓表示，队伍处在新老交替阶段，需给年轻运动员更多试错空间。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">320万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://fyb-2.cdn.bcebos.com/hotboard_image/aba31ae257df15f3a3bc5361bce87360" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">51</span>
+                            <h3 class="card-title">
+                                <a href="https://www.baidu.com/s?wd=%E4%BB%8A%E5%B9%B4%E4%B8%AD%E7%A7%8B%E5%8D%81%E4%BA%94%E7%9A%84%E6%9C%88%E4%BA%AE%E5%8D%81%E4%B8%83%E5%9C%86&amp;sa=fyb_news&amp;rsv_dl=fyb_news" target="_blank" rel="noopener">今年中秋十五的月亮十七圆</a>
+                            </h3>
+                        </div>
+                        <p class="card-summary">2026年中秋迎来罕见天象“十五的月亮十七圆”，最圆时刻出现在9月27日0时49分（农历八月十七）。专家指出9月25日至27日连续三晚均适宜赏月。</p>
+                        <div class="card-footer">
+                            <span class="card-hot">312万</span>
+                            <span>百度</span>
+                        </div>
+                    </div>
+                </article>
+
+        </div>
+    </div>
+</div><div class="tab-content " id="tab-tab2">
+    <div class="section section-douyin">
+        <div class="section-header">
+            <div class="section-icon"></div>
+            <h2 class="section-title">抖音</h2>
+        </div>
+        <div class="cards">
+            
+                <article class="card">
+                    <img class="card-image" src="https://p26-sign.douyinpic.com/tos-cn-p-0015/ogQWGQDdQFAvQrBtmEENklA3AsU8f9lqqBelgW~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=A8yg1ypu1%2BEekQHWUAj%2Bc9jf6kM%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-1">1</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E4%B8%AD%E7%BE%8E%E5%85%83%E9%A6%96%E4%BC%9A%E8%B0%88" target="_blank" rel="noopener">中美元首会谈</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">11,230,443</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p5-ex-gddgtc-sign.douyinpic.com/obj/webcast-cover/7689098774375222070?lk3s=bfd515bb&x-expires=1790326800&x-signature=ZdprMx8yF%2BgP50E7UzCgwItFpXY%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-2">2</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E4%B9%A0%E8%BF%91%E5%B9%B3%E5%A4%AB%E5%A6%87%E5%87%BA%E5%B8%AD%E6%AC%A2%E8%BF%8E%E5%AE%B4%E4%BC%9A" target="_blank" rel="noopener">习近平夫妇出席欢迎宴会</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">11,098,378</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p5-ex-gddgtc-sign.douyinpic.com/tos-cn-p-0015/o0yF2BCIQq7GWBAeBfss1QnaVGfO1DP9aHEAAB~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=Ma8z%2F%2BE6nV3%2FNX%2BStfR77KkUj10%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-3">3</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E5%8D%81%E4%BA%94%E4%BA%94%E6%96%87%E6%97%85%E9%AB%98%E8%B4%A8%E9%87%8F%E5%8F%91%E5%B1%95%E9%83%A8%E7%BD%B2" target="_blank" rel="noopener">十五五文旅高质量发展部署</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">10,867,219</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p26-sign.douyinpic.com/tos-cn-p-0015/oURtDfkKAEoNII1fSEqgFBI1I89dAcOQmACSHb~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=VuFsTwlUQWBwhOUSHJjQjZBqT9s%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">4</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E5%AD%99%E9%A2%96%E8%8E%8E%E7%8E%8B%E6%A5%9A%E9%92%A6%E8%BF%9B%E6%B7%B7%E5%8F%8C%E5%8D%8A%E5%86%B3%E8%B5%9B" target="_blank" rel="noopener">孙颖莎王楚钦进混双半决赛</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">10,837,627</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p5-ex-gddgtc-sign.douyinpic.com/tos-cn-p-0015/o0AACfypFPqQfBv76NDJFIEHCtO9E3FgkIaAEU~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=j7VJCQ8uctIGzdGY2dcxGLxJNIg%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">5</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E4%B8%AD%E7%A7%8B%E8%8A%82%E5%BF%AB%E4%B9%90" target="_blank" rel="noopener">中秋节快乐</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">10,293,104</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p3-sign.douyinpic.com/tos-cn-p-0015/owm9DEgAE5qG6yAuIB1T0NFa7tePJAfSxpAoba~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=DrGm2ooCa62HAEFDcgUpBUFRojI%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">6</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E6%9C%88%E6%BB%A1%E4%B8%AD%E7%A7%8B%20%E6%9F%BF%E6%9F%BF%E5%A6%82%E6%84%8F" target="_blank" rel="noopener">月满中秋 柿柿如意</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">10,268,323</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p3-sign.douyinpic.com/tos-cn-i-0813/ocDzAEnAjI2tSFPANDKfCPmNs8AjC9gf0qENAA~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=zxkrLra35Vc77gTAH8njpf7KtGM%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">7</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E4%B8%AD%E7%A7%8B%E6%96%87%E6%A1%88" target="_blank" rel="noopener">中秋文案</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">9,183,346</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p9-sign.douyinpic.com/tos-cn-i-0813c001/oM9CaFAhAH4fCes9rq7BA5Dz1AEAIAgPD5lrEg~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=WCvimbWn0BcWHV5udSbGix8CicA%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">8</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E4%B8%AD%E7%A7%8B%E6%99%92%E6%9C%88%E4%BA%AE%E5%A4%A7%E8%B5%9B" target="_blank" rel="noopener">中秋晒月亮大赛</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">9,022,986</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p3-sign.douyinpic.com/tos-cn-p-0015/oMTvQqKHDAUr1CI0iIIB08aCBPI1rgKEAi6AU~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=Ju9%2B6NTclT202EbwLMvR1mQRyjs%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">9</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E5%A4%A9%E7%9C%BC%E6%A0%B8%E5%BF%83%E9%98%B5%E8%A6%81%E6%9D%A5%E4%BA%86" target="_blank" rel="noopener">天眼核心阵要来了</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">8,996,322</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p26-sign.douyinpic.com/tos-cn-p-0015/oInWBv2eAi3NIA182A1giBZ1ISeuAYLaCAjmDI~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=1Y7cexAeQJ5gfmezCJ3jksF2MYQ%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">10</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E4%B8%9C%E9%83%A8%E6%88%98%E5%8C%BA%E5%8F%91%E5%B8%83%E4%B8%AD%E7%A7%8B%E9%87%8D%E7%A3%85%E6%B5%B7%E6%8A%A5" target="_blank" rel="noopener">东部战区发布中秋重磅海报</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">8,921,451</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p26-sign.douyinpic.com/tos-cn-p-0015/ogcVpwlvMAgSI7exAgLEaeEGdeaqvXnIBBCLUg~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=tPiR0jOdX4sVQTmY2991GCy9kAA%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">11</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E4%B8%AD%E7%A7%8B%E5%9B%BD%E5%BA%86%E8%A7%82%E5%BD%B1%E6%94%BB%E7%95%A5%E8%AF%B7%E6%94%B6%E5%A5%BD" target="_blank" rel="noopener">中秋国庆观影攻略请收好</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">8,919,637</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p5-sign.douyinpic.com/tos-cn-p-0015c000-ce/o0kqtDDTIECEolzofAAwQSAF0crWyoOnfvH9ek~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=kYxa6dxuCvNjFhiqMeX5QL56OD0%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">12</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E4%B8%AD%E7%A7%8B%E8%8A%82%E5%AE%B6%E4%BA%BA%E5%9C%A8%E7%9A%84%E5%9C%B0%E6%96%B9%E5%B0%B1%E6%98%AF%E5%9B%A2%E5%9C%86" target="_blank" rel="noopener">中秋节家人在的地方就是团圆</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">8,884,239</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p5-ex-gddgtc-sign.douyinpic.com/tos-cn-p-0015c000-ce/ogM96sE10CaI1mo3Ai0Z2EwQDfAfFEgJLBDq2Q~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=JwTECraxhrBQpTq3z1tOql50hGQ%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">13</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E8%B6%85%E9%95%BF%E6%B0%B4%E6%9E%9C%E8%9B%8B%E6%8C%9E%E5%A4%AA%E6%B2%BB%E6%84%88%E4%BA%86" target="_blank" rel="noopener">超长水果蛋挞太治愈了</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">8,791,138</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p26-sign.douyinpic.com/tos-cn-p-0015/oQq2I1pAADEh5glKnooBfFt9JACytIUe9attLG~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=U78WFfA84LRArHlypgRphB0p8mE%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">14</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E6%8C%AA%E5%A8%813%3A2%E6%88%98%E8%83%9C%E4%B8%B9%E9%BA%A6" target="_blank" rel="noopener">挪威3:2战胜丹麦</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">8,768,074</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p26-sign.douyinpic.com/tos-cn-p-0015/og3n75cXVIGPBcBJmCZLdtuIQ4GBxyACTAeUef~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=MJT3VAELXjo%2FHaj4p8vnKEf8Vz8%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">15</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E4%B8%80%E8%B5%B7%E8%BF%87%E7%AC%AC%E4%B8%80%E4%B8%AA%E4%B8%AD%E7%A7%8B%E8%8A%82" target="_blank" rel="noopener">一起过第一个中秋节</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">8,670,840</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p26-sign.douyinpic.com/tos-cn-i-0813c001/oASA2tAF9FIaACDAqqgD9egAhEIvfArDQqUIaY~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=0tOr96mkyYK5mpuVIqB1gdnhNSY%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">16</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E8%BF%99%E4%B8%AA%E5%81%87%E6%9C%9F%E6%88%91%E5%B7%B2%E6%8B%BF%E4%B8%8B%E6%AD%A6%E5%8A%9F%E5%B1%B1" target="_blank" rel="noopener">这个假期我已拿下武功山</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">8,637,950</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p26-sign.douyinpic.com/tos-cn-p-0015/o4ePqAQ4hMD1gIADQv9AB5ApmCFH9tOERawNfa~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=8w6fIzdeDxrp2fT%2Bbuutj4IS4hA%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">17</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E6%8C%91%E6%88%98%E5%90%84%E5%9C%B0%E6%9C%80%E5%A4%AF%E4%B8%AD%E7%A7%8B%E7%A1%AC%E8%8F%9C" target="_blank" rel="noopener">挑战各地最夯中秋硬菜</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">8,353,560</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p9-sign.douyinpic.com/tos-cn-p-0015/oQ4nEAAF2Q2vV9IgG3AtnNQbeOajDf1BCDhqgr~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=zuhoBMAj2e2tHYn0Yicy5GR2cfQ%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">18</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E6%AC%A7%E5%9B%BD%E8%81%94%E8%8D%B7%E5%85%B01%3A1%E6%88%98%E5%B9%B3%E5%BE%B7%E5%9B%BD" target="_blank" rel="noopener">欧国联荷兰1:1战平德国</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,848,486</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p26-sign.douyinpic.com/tos-cn-p-0015c000-ce/oYUqtCDuIECES90NfAAwQ0pFOSqRXQkrf6z9eV~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=l8INoTAyOOyolcwlHsIq3xfAq4U%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">19</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E7%94%A8%E6%89%8B%E5%8A%BF%E8%88%9E%E8%AF%B4%E4%B8%AD%E7%A7%8B%E5%BF%AB%E4%B9%90" target="_blank" rel="noopener">用手势舞说中秋快乐</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,784,292</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p26-sign.douyinpic.com/tos-cn-p-0015/ocMFVGNB1BA5lqniijooiAIHAAD1fWugAeI7mQ~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=1hQM4lsOexzseXvptQ1OGOMsLAg%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">20</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E4%B8%AD%E7%A7%8B%E7%9A%84%E5%9B%A2%E5%9C%86%E6%9C%80%E6%98%AF%E7%8F%8D%E8%B4%B5" target="_blank" rel="noopener">中秋的团圆最是珍贵</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,777,375</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p11-sign.douyinpic.com/tos-cn-p-0015c000-ce/oI9vmM1QAA4JmYIDuTfQeMefEhr2APXgqWFOw8~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=NwfJRm7HJyzkoHxFwX4wLz2dgIU%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">21</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E5%A4%A7%E7%86%8A%E7%8C%AB%E5%B9%B3%E5%B9%B3%E7%A6%8F%E5%8F%8C%E5%8D%B3%E5%B0%86%E8%B5%B4%E7%BE%8E" target="_blank" rel="noopener">大熊猫平平福双即将赴美</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,770,085</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p26-sign.douyinpic.com/tos-cn-p-0015/ogLixFLAEIiEgwteS1f3drHA9PKxqDNEABqcBi~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=KJ%2BYACkvchFyXiLCUguoP%2BOe99c%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">22</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E5%91%A8%E6%9D%B0%E4%BC%A6%E5%8D%97%E4%BA%AC%E6%BC%94%E5%94%B1%E4%BC%9A" target="_blank" rel="noopener">周杰伦南京演唱会</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,768,410</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p11-sign.douyinpic.com/tos-cn-p-0015/o0sDFCKyeBuNGeVzIBhaEfEhG5ZTVQAxuB47AP~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=%2F6T2cXhAyQlWUGIlLdldwiv62fU%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">23</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E4%B8%BE%E5%A4%B4%E6%9C%9B%E6%9C%88%E6%80%9D%E6%95%85%E4%B9%A1" target="_blank" rel="noopener">举头望月思故乡</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,743,304</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p3-sign.douyinpic.com/tos-cn-p-0015c000-ce/ow0aDMT820nXlCFHii7vrIIWy16O5AABlAPFh~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=a6fM%2FYhn6%2BLoo2DaTwF00w6LLwo%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">24</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E5%91%A8%E6%9F%AF%E5%AE%87%E5%89%A7%E9%87%8C%E5%A9%9A%E7%A4%BC%E5%90%BB%E5%A4%AA%E8%87%AA%E7%84%B6" target="_blank" rel="noopener">周柯宇剧里婚礼吻太自然</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,703,878</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p26-sign.douyinpic.com/tos-cn-p-0015/oEEuQlCVBAGQf17ulEDMfFrApfHDaFxCbGpsAB~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=lp6XsfBRlVOYmhKggiRIsrbPP3o%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">25</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E4%B8%AD%E7%A7%8B%E5%81%87%E6%9C%9F%E9%AB%98%E9%80%9F%E6%AD%A3%E5%B8%B8%E6%94%B6%E8%B4%B9" target="_blank" rel="noopener">中秋假期高速正常收费</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,684,072</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p3-sign.douyinpic.com/tos-cn-p-0015/oQVZGMqrQU1eCgwBQNezdBALM7LarGeM8AEGdI~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=DpTH5hGRqEYzpm8QsmAUD2eCbPY%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">26</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E5%B0%8F%E7%B1%B318%20Pro%E5%BC%80%E7%AE%B1" target="_blank" rel="noopener">小米18 Pro开箱</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,677,177</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p26-sign.douyinpic.com/tos-cn-p-0015/owUtImQiavtPqBmZ2b1ciAIDz9rAIgP7A9i7L~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=VIBC4wBj1O%2FggUTh1wHypnTgYP8%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">27</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/JOJO%E6%96%B0OP%E5%8A%A8%E7%94%BB%E8%A7%A3%E7%A6%81" target="_blank" rel="noopener">JOJO新OP动画解禁</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,672,803</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p3-sign.douyinpic.com/tos-cn-p-0015/okmqb2O5eApUU2uzAgL8we0GLe6r5gfICDEFhg~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=rcWXjdMu8RZxCNtJCVtCZd09JSQ%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">28</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E7%A5%9D%E7%A6%8F%E4%BD%A0%E7%9A%84%E4%B8%AD%E7%A7%8B%E6%9C%89%E6%BB%A1%E6%BB%A1%E7%9A%84%E7%88%B1" target="_blank" rel="noopener">祝福你的中秋有满满的爱</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,666,581</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p3-sign.douyinpic.com/tos-cn-p-0015c000-ce/ogWseIFIDAFa7Ct2wEf5AgCAsFt6yqEA3hf94z~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=wVVoCGJ4s74rPjPi22kCSt3yCgU%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">29</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E6%B0%B4%E8%B1%9A%E5%99%9C%E5%99%9C%E6%BC%94%E6%88%91%E4%B8%AD%E7%A7%8B%E8%8A%82%E5%89%8D%E7%8A%B6%E6%80%81" target="_blank" rel="noopener">水豚噜噜演我中秋节前状态</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,663,381</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p3-sign.douyinpic.com/tos-cn-p-0015c000-ce/oIBlaeG3gLAvgeDZAPIQi2BcJc2Ne7IOV6jbgI~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=Um55F5GMd7%2Bry9raOTa0Tn%2Bv5mk%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">30</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E6%9D%A1%E7%BA%B9%E5%85%A8%E9%9D%A2%E5%85%A5%E4%BE%B5%E6%88%91%E7%9A%84%E4%B8%96%E7%95%8C" target="_blank" rel="noopener">条纹全面入侵我的世界</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,657,470</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p26-sign.douyinpic.com/tos-cn-i-0813c000-ce/ooAUAAUqIBPBMAQoRPnalECQGr1RJii2AhABy~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=2yR3OdWpwPP7K8qGaLEiVfGqjl0%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">31</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E5%9B%BD%E5%BA%86%E6%9D%A5%E6%99%AF%E5%BE%B7%E9%95%87%E4%BD%93%E9%AA%8C%E7%93%B7%E9%83%BD%E7%9A%84%E6%B5%AA%E6%BC%AB" target="_blank" rel="noopener">国庆来景德镇体验瓷都的浪漫</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,655,981</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p11-sign.douyinpic.com/tos-cn-i-0813/ogGr03e7A3kTVLABVBeEArG9IaIBnEuA7eCAXL~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=RiUe92DoNdosDwJibhfOxXnD49w%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">32</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E5%A8%83%E5%A8%83%E4%BB%AC%E6%9D%A5%E9%80%81%E6%B5%8E%E5%85%AC%E7%88%B7%E7%88%B7%E4%BA%86" target="_blank" rel="noopener">娃娃们来送济公爷爷了</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,654,879</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p26-sign.douyinpic.com/tos-cn-p-0015/o0E7yhQnyFVWFADHCAf2F2AECgIsgaenBfZV8B~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=0qwWCG0KHe6oBVDMuhzt0Z%2FZZ7k%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">33</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E5%BC%A0%E7%A2%A7%E6%99%A8%E7%8E%8B%E8%B5%AB%E9%87%8E%E6%B8%85%E5%94%B1%E5%85%89%E7%9A%84%E6%96%B9%E5%90%91" target="_blank" rel="noopener">张碧晨王赫野清唱光的方向</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,654,841</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p3-sign.douyinpic.com/tos-cn-p-0015c000-ce/oYFt2AfXerQCIY92AOwwIaFExJfLrqumDBEmCn~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=xdClMtDezIod%2BuvKP8gzB%2BgIipI%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">34</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E5%85%89%E9%81%87%E4%B9%9D%E8%89%B2%E9%B9%BF%E8%81%94%E5%8A%A8%E4%B8%8A%E7%BA%BF" target="_blank" rel="noopener">光遇九色鹿联动上线</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,654,365</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p26-sign.douyinpic.com/tos-cn-p-0015/oA09AaGCfQVZLWDXYGeC7ujSxRLBiRBfAIBG2I~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=zwKsZ8emObFe3ESqJeyns9qfypA%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">35</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E6%88%91%E4%BB%AC%E4%B8%80%E8%B5%B7%E7%9C%8B%E6%9C%88%E4%BA%AE%E7%88%AC%E4%B8%8A%E6%9D%A5" target="_blank" rel="noopener">我们一起看月亮爬上来</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,653,571</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p9-sign.douyinpic.com/tos-cn-i-0813/oIpK2NPYiINqAV2AvbCkiAq9grKuAIpEwaBA3~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=d8z2zSiN%2BijJJx3erRLxYRmkd80%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">36</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E5%92%8C%E6%88%91%E7%9A%84%E6%BC%AB%E5%A8%81%E6%90%AD%E5%AD%90%E7%9C%8B%E5%A4%8D%E8%81%944" target="_blank" rel="noopener">和我的漫威搭子看复联4</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,651,514</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p3-sign.douyinpic.com/tos-cn-i-0813c000-ce/oACsAMhWhiCA0ARAE1iB9xfgIAvlwmGHEnyNOe~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=Axa9n773lGIxk3x6Tvpwr%2BPA%2Fho%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">37</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E8%AE%B8%E5%B5%A9%E5%A4%A9%E6%B4%A5%E6%BC%94%E5%94%B1%E4%BC%9A%E7%B4%AB%E8%89%B2%E7%A9%BF%E6%90%AD%E5%A4%A7%E8%B5%8F" target="_blank" rel="noopener">许嵩天津演唱会紫色穿搭大赏</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,650,794</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p3-sign.douyinpic.com/tos-cn-i-0813/oIpvHqASIEJz8YAAgAqAkDeCsQYHD2AfgA2FF9~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=9Vumt%2F7HQ7KeU8hXJzL0XBac77I%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">38</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E8%B4%B5%E5%B7%9E%E8%BE%A3%E5%8D%A4%E4%BC%9A%E6%83%A9%E7%BD%9A%E6%AF%8F%E4%B8%80%E4%B8%AA%E5%98%B4%E7%A1%AC%E7%9A%84%E4%BA%BA" target="_blank" rel="noopener">贵州辣卤会惩罚每一个嘴硬的人</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,650,635</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p26-sign.douyinpic.com/tos-cn-p-0015c000-ce/osiPIeCfm0YEDYAew0W18Cikp0tBM6wEAa7z0C~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=nzQxgPprno%2BdxogZZiulLw35cs4%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">39</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E5%81%87%E6%9C%9F%E9%80%9B%E5%90%83%E5%A4%AA%E5%8E%9F%E5%B0%8F%E5%90%83%E8%A1%97" target="_blank" rel="noopener">假期逛吃太原小吃街</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,648,984</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p5-ex-gddgtc-sign.douyinpic.com/tos-cn-p-0015/oQe0cpgtfAIP3I2TED9qPiB98EADFATQwPJIN6~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=CZknhZ%2BWWvOV6vjkopwFt065uio%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">40</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E6%BC%94%E5%91%98%E7%8E%8B%E6%9C%B1%E6%82%A6%E5%9B%9E%E5%BA%94AI%E6%8D%A2%E8%84%B8%E9%A3%8E%E6%B3%A2" target="_blank" rel="noopener">演员王朱悦回应AI换脸风波</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,648,962</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p5-ex-gddgtc-sign.douyinpic.com/tos-cn-p-0015/oYXzPG6ImCwIAiZoXrD3PyviQ6CKBuaCmzQIA~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=dbBLHk%2FEdkjQL2q7QgJDzsN0KDk%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">41</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E8%B5%B5%E4%BB%8A%E9%BA%A6%E6%96%B0%E5%89%A7%E4%B8%BA%E4%BA%86%E9%92%B1%E4%B8%8A%E7%8F%AD" target="_blank" rel="noopener">赵今麦新剧为了钱上班</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,648,740</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p26-sign.douyinpic.com/tos-cn-p-0015/owEA2WCWoim3ABDmc16QeAgd7iIvfAVBIwnhDP~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=a7BGIEkdD9pz2egN%2BulWvvz615A%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">42</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E5%8F%AA%E6%9C%89%E5%9C%A8%E7%94%98%E8%82%83%E6%89%8D%E8%83%BD%E5%90%83%E5%88%B0%E7%9A%84%E6%9C%88%E9%A5%BC" target="_blank" rel="noopener">只有在甘肃才能吃到的月饼</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,648,517</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p26-sign.douyinpic.com/tos-cn-p-0015/o8xAQeFtXQDkTxKARWBgfnECq0Qs9oaACoGABB~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=SVfucZKvS%2FTQk56n9j31eWkLYQQ%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">43</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E5%9C%A8%E6%B8%B8%E6%88%8F%E9%87%8C%E8%BF%87%E4%B8%AD%E7%A7%8B" target="_blank" rel="noopener">在游戏里过中秋</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,645,595</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p11-sign.douyinpic.com/tos-cn-p-0015/o8rPsBCB1BZ6LX2iiEubnAENAAlzfWhgIeI7SB~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=ffeAsq5qBh9qgId6Nq%2FvLcYsxFo%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">44</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E5%A4%9A%E6%83%B3%E5%92%8C%E4%BD%A0%E5%86%8D%E8%BF%87%E4%B8%80%E6%AC%A1%E4%B8%AD%E7%A7%8B" target="_blank" rel="noopener">多想和你再过一次中秋</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,643,424</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p3-sign.douyinpic.com/tos-cn-p-0015/oIHQa0IIGiKwv0ISB9t7uT6rIziAXyMnCaAvP~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=8SwrgzMns9mp5maT4njATuRduw0%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">45</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E6%8A%96%E9%9F%B3%E7%BD%91%E5%8F%8B%E8%AF%84%E8%AE%BA%E5%8C%BA%E9%80%81%E5%88%AB%E6%B8%B8%E6%9C%AC%E6%98%8C" target="_blank" rel="noopener">抖音网友评论区送别游本昌</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,638,136</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p26-sign.douyinpic.com/tos-cn-p-0015/oglAdn1IzIMBQBWkgMD5cfiOiAAe6AW2wgG32I~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=tv5rXKPXQVd9xAuvGReDw4z3NgY%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">46</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E4%B8%80%E5%88%86%E9%92%9F%E8%AE%B2%E6%B8%85%E8%9E%83%E8%9F%B9%E5%93%AA%E9%87%8C%E4%B8%8D%E8%83%BD%E5%90%83" target="_blank" rel="noopener">一分钟讲清螃蟹哪里不能吃</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,635,951</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p5-ex-gddgtc-sign.douyinpic.com/tos-cn-p-0015/o0fZDfocBE2EQMUpTRVAFCknQe70AY34NBFEnN~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=r0dIUxcbi2f%2FhBVr%2BU3BExxf9Ro%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">47</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E6%97%A0%E7%95%8F%E5%A5%91%E7%BA%A6%E5%B7%B4%E9%BB%8E%E4%B8%96%E5%AE%B6%E7%BD%91%E5%90%A7" target="_blank" rel="noopener">无畏契约巴黎世家网吧</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,635,929</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+
+                <article class="card">
+                    <img class="card-image" src="https://p26-sign.douyinpic.com/tos-cn-i-0813c000-ce/oMIDVZAyaeMeBFJSHzhJ95AAECOEzqAEWgfF76~noop.jpeg?lk3s=bfd515bb&x-expires=1790326800&x-signature=6rg6vsHG574nZQD%2BtvjbS5Ssh%2FU%3D&from=3218412987" alt="" loading="lazy">
+                    <div class="card-body">
+                        <div class="card-top">
+                            <span class="card-rank rank-other">48</span>
+                            <h3 class="card-title">
+                                <a href="https://www.douyin.com/search/%E4%B8%80%E4%B8%AA%E4%BA%BA%E5%BF%83%E4%B8%AD%E5%8F%AA%E6%9C%89%E4%B8%80%E4%B8%AA%E5%AE%9D%E8%B4%9D" target="_blank" rel="noopener">一个人心中只有一个宝贝</a>
+                            </h3>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <span class="card-hot">7,635,841</span>
+                            <span>抖音</span>
+                        </div>
+                    </div>
+                </article>
+
+        </div>
+    </div>
+</div>
+    </main>
+
+    <footer class="page-footer">
+        <p>本页面由脚本自动生成，仅供阅读参考 · 2026-09-25</p>
+    </footer>
+
+    <script>
+        function switchTab(id) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById('btn-' + id).classList.add('active');
+            document.getElementById('tab-' + id).classList.add('active');
+        }
+    </script>
+</body>
+</html>
